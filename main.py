@@ -1,8 +1,16 @@
 from typing import Optional, AnyStr, Any
+import urllib3
+import json
 
+import lxml
+from lxml import html
 from bs4 import BeautifulSoup
 import httpx
 from fastapi import FastAPI
+
+
+
+
 
 """ DATA RETRIEVAL
 """
@@ -56,7 +64,13 @@ def fetch_from(pair: str):
         quote = rates[0].string
 
     if pair == "HTG":
-        pass
+        http = urllib3.PoolManager()
+        r = http.request('GET', 'http://www.mef.gouv.ht/index.php?page=Accueil')
+        data_string = r.data.decode('utf-8', errors='ignore')
+        tree = html.fromstring(data_string)
+        quote = tree.xpath(
+            '//table[@style="border-collapse:collapse; width:100%;height:75px; margin-top:50px; margin-bottom:30px; border-color: #CCC; margin-right:2px;"]//tr[3]//td[2]/text()')
+        quote = quote[0]
     
     if pair == "SRD":
         rates = soup.select("#currency-notes > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(2)")

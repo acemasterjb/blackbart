@@ -15,7 +15,7 @@ conda activate ./venv
 
 **... with vanilla python**
 ```bash
-python -m venv ./venv
+python3 -m venv ./venv
 ```
 then activate
 
@@ -31,7 +31,7 @@ source ./venv/bin/activate
 
 **2) Set up your dependencies**
 ```bash
-pip3 install fastapi uvicorn[standard]
+pip3 pip install -r requirements.txt
 ```
 
 **3) Run the server**
